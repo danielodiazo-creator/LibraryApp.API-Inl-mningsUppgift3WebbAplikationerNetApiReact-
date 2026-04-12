@@ -1,15 +1,17 @@
-﻿using LibraryApp.Infrastructure.Data;
+﻿using LibraryApp.Application.DTOs;
+using LibraryApp.Domain.Entities;
+using LibraryApp.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LibraryApp.Domain.Entities;
-using LibraryApp.Application.DTOs;
 
 
 namespace LibraryApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
         private readonly AppDbContext _context;
