@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.API.Controllers
 {
-    [Authorize]
+
     [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
@@ -38,6 +38,7 @@ namespace LibraryApp.API.Controllers
             return Ok(booksDto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateBook(CreateBookDto dto)
         {
@@ -53,6 +54,7 @@ namespace LibraryApp.API.Controllers
             return Ok(book);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById(int id)
         {
@@ -72,7 +74,7 @@ namespace LibraryApp.API.Controllers
             return Ok(bookDto);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, UpdateBookDto dto)
         {
@@ -90,7 +92,7 @@ namespace LibraryApp.API.Controllers
 
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {

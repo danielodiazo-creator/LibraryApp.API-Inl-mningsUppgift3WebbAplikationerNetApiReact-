@@ -33,7 +33,7 @@ namespace LibraryApp.API.Controllers
                 Username = dto.Username,
                 Email = dto.Username,
                 PasswordHash = dto.Password,
-                Role = "User"
+                Role = "Admin"
 
             };
 

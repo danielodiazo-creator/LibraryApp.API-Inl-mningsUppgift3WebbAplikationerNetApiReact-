@@ -7,14 +7,29 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database
+//
+// ---------------- SERVICES ----------------
+//
+
+// DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Controllers
 builder.Services.AddControllers();
 
-// Swagger clásico
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -24,7 +39,7 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    // JWT en Swagger
+    // JWT i Swagger
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -51,7 +66,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// JWT Settings
+// JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -71,19 +86,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//
+// ---------------- APP ----------------
+//
+
 var app = builder.Build();
 
-// Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API v1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
+// 🔥 Viktigt: CORS kommer här
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
