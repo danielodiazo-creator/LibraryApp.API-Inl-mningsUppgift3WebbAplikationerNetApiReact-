@@ -7,7 +7,6 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LibraryApp.Application.DTOs;
-using Microsoft.Identity.Client;
 
 namespace LibraryApp.API.Controllers
 {
@@ -24,46 +23,54 @@ namespace LibraryApp.API.Controllers
             _config = config;
         }
 
-    
+        // ---------------- REGISTER ----------------
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
+            var exists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
+            if (exists)
+                return BadRequest("User already exists");
+
             var user = new User
             {
                 Username = dto.Username,
-                Email = dto.Username,
+                Email = dto.Email,
                 PasswordHash = dto.Password,
-                Role = "Admin"
-
+                Role = "User" // default
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(user);
-
+            return Ok(new { message = "User created" });
         }
 
-            
-        
+        // ---------------- LOGIN ----------------
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == dto.Email &&
-                                          u.PasswordHash == dto.Password);
+                .FirstOrDefaultAsync(u =>
+                    u.Email == dto.Email &&
+                    u.PasswordHash == dto.Password);
 
             if (user == null)
-                return Unauthorized();
+                return Unauthorized("Invalid credentials");
 
             var token = GenerateToken(user);
 
-            return Ok(new { token });
+            return Ok(new
+            {
+                token,
+                email = user.Email,
+                role = user.Role
+            });
         }
 
+        // ---------------- JWT ----------------
         private string GenerateToken(User user)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
@@ -78,8 +85,9 @@ namespace LibraryApp.API.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: creds);
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
