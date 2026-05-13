@@ -1,0 +1,161 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* BODY */
+body {
+  background: #f5f7fb;
+  color: #333;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #1e293b;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h2 {
+  font-size: 22px;
+}
+
+.navbar button {
+  margin-left: 10px;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* TITLES */
+h1 {
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+input {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+input:focus {
+  border-color: #3b82f6;
+}
+
+/* BUTTONS */
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+/* LIST */
+ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+li {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* BOOK ACTIONS */
+li button {
+  margin-left: 8px;
+  background: #ef4444;
+}
+
+li button:hover {
+  background: #dc2626;
+}
+
+/* EDIT BUTTON */
+li button:first-of-type {
+  background: #f59e0b;
+}
+
+li button:first-of-type:hover {
+  background: #d97706;
+}
+
+/* BORROW BUTTON */
+li button:nth-of-type(1):only-child {
+  background: #10b981;
+}
+
+li button:nth-of-type(1):only-child:hover {
+  background: #059669;
+}
+
+/* LOGIN BOX */
+.login-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-box input {
+  margin-bottom: 10px;
+}
+
+.login-box button {
+  margin-top: 10px;
+}
+
+/* ADD / EDIT BOX */
+.container > div {
+  margin-bottom: 15px;
+}
+
+/* USER TEXT */
+.navbar span {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #cbd5f5;
+}
